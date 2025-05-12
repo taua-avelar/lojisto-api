@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, TableColumn, TableForeignKey } from 'typeorm';
 
-export class AddSellerIdToSales1720000000002 implements MigrationInterface {
+export class AddSellerIdToSales1745023100004 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Adicionar coluna seller_id na tabela sales
     await queryRunner.addColumn(

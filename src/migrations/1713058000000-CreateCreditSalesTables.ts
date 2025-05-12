@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateCreditSalesTables1713058000000 implements MigrationInterface {
+export class CreateCreditSalesTables1745100000001 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Criar tabela de crediários
     await queryRunner.query(`
@@ -79,7 +79,7 @@ export class CreateCreditSalesTables1713058000000 implements MigrationInterface 
     // Remover triggers
     await queryRunner.query(`DROP TRIGGER IF EXISTS update_credit_installments_updated_at ON credit_installments`);
     await queryRunner.query(`DROP TRIGGER IF EXISTS update_credit_sales_updated_at ON credit_sales`);
-    
+
     // Remover índices
     await queryRunner.query(`DROP INDEX IF EXISTS idx_credit_installments_due_date`);
     await queryRunner.query(`DROP INDEX IF EXISTS idx_credit_installments_status`);
@@ -87,11 +87,11 @@ export class CreateCreditSalesTables1713058000000 implements MigrationInterface 
     await queryRunner.query(`DROP INDEX IF EXISTS idx_credit_sales_status`);
     await queryRunner.query(`DROP INDEX IF EXISTS idx_credit_sales_customer_id`);
     await queryRunner.query(`DROP INDEX IF EXISTS idx_credit_sales_store_id`);
-    
+
     // Remover tabelas
     await queryRunner.query(`DROP TABLE IF EXISTS credit_installments`);
     await queryRunner.query(`DROP TABLE IF EXISTS credit_sales`);
-    
+
     // Remover função
     await queryRunner.query(`DROP FUNCTION IF EXISTS update_updated_at_column`);
   }

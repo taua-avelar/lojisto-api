@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddCreditSaleToPaymentMethodEnum1713058100000 implements MigrationInterface {
+export class AddCreditSaleToPaymentMethodEnum1745100000002 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Desabilitar temporariamente as transações para permitir a alteração do enum
     await queryRunner.query('COMMIT');

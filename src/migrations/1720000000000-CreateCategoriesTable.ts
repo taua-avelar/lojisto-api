@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateCategoriesTable1720000000000 implements MigrationInterface {
-    name = 'CreateCategoriesTable1720000000000'
+export class CreateCategoriesTable1745023100002 implements MigrationInterface {
+    name = 'CreateCategoriesTable1745023100002'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         // Criar tabela de categorias
@@ -20,25 +20,25 @@ export class CreateCategoriesTable1720000000000 implements MigrationInterface {
 
         // Adicionar chave estrangeira para a tabela de lojas
         await queryRunner.query(`
-            ALTER TABLE "categories" 
-            ADD CONSTRAINT "FK_categories_store" 
-            FOREIGN KEY ("storeId") 
-            REFERENCES "stores"("id") 
+            ALTER TABLE "categories"
+            ADD CONSTRAINT "FK_categories_store"
+            FOREIGN KEY ("storeId")
+            REFERENCES "stores"("id")
             ON DELETE CASCADE
         `);
 
         // Adicionar coluna categoryId na tabela de produtos
         await queryRunner.query(`
-            ALTER TABLE "products" 
+            ALTER TABLE "products"
             ADD COLUMN "categoryId" uuid
         `);
 
         // Adicionar chave estrangeira para a tabela de categorias
         await queryRunner.query(`
-            ALTER TABLE "products" 
-            ADD CONSTRAINT "FK_products_category" 
-            FOREIGN KEY ("categoryId") 
-            REFERENCES "categories"("id") 
+            ALTER TABLE "products"
+            ADD CONSTRAINT "FK_products_category"
+            FOREIGN KEY ("categoryId")
+            REFERENCES "categories"("id")
             ON DELETE SET NULL
         `);
     }
@@ -46,19 +46,19 @@ export class CreateCategoriesTable1720000000000 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         // Remover chave estrangeira da tabela de produtos
         await queryRunner.query(`
-            ALTER TABLE "products" 
+            ALTER TABLE "products"
             DROP CONSTRAINT "FK_products_category"
         `);
 
         // Remover coluna categoryId da tabela de produtos
         await queryRunner.query(`
-            ALTER TABLE "products" 
+            ALTER TABLE "products"
             DROP COLUMN "categoryId"
         `);
 
         // Remover chave estrangeira da tabela de categorias
         await queryRunner.query(`
-            ALTER TABLE "categories" 
+            ALTER TABLE "categories"
             DROP CONSTRAINT "FK_categories_store"
         `);
 
