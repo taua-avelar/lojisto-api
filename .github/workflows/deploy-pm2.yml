@@ -97,11 +97,11 @@ jobs:
         timeout: 600s
         command_timeout: 600s
         script: |
-          set -e
-
           echo "🛑 Parando e removendo aplicação anterior (se existir)..."
           pm2 stop lojisto-api || true
           pm2 delete lojisto-api || true
+          pm2 kill || true
+          pm2 flush || true
 
           echo "🗂️ Preparando diretório..."
           sudo rm -rf /home/ubuntu/lojisto-api
@@ -131,8 +131,11 @@ jobs:
           pm2 start ecosystem.config.js
           pm2 save
 
+          echo "⏳ Aguardando inicialização..."
+          sleep 3
+
           echo "📊 Status da aplicação:"
-          pm2 status
+          pm2 list
 
           echo "🧹 Limpando arquivos temporários..."
           rm -f /home/ubuntu/lojisto-api-deployment.tar.gz
@@ -151,12 +154,13 @@ jobs:
         script: |
           echo "🏥 Verificando deployment..."
 
-          # Verificar se PM2 está rodando
+          # Verificar se PM2 está rodando (sem grep para evitar travamento)
           API_STATUS=$(pm2 jlist | jq -r '.[] | select(.name=="lojisto-api") | .pm2_env.status' 2>/dev/null || echo "error")
 
           if [ "$API_STATUS" = "online" ]; then
             echo "✅ API online no PM2"
             echo "🎉 Deployment concluído com sucesso!"
+            echo "🌐 API disponível em: http://54.235.18.125:8000"
           else
             echo "❌ Status da API: $API_STATUS"
             pm2 status || true
