@@ -100,8 +100,6 @@ jobs:
           echo "🛑 Parando e removendo aplicação anterior (se existir)..."
           pm2 stop lojisto-api || true
           pm2 delete lojisto-api || true
-          pm2 kill || true
-          pm2 flush || true
 
           echo "🗂️ Preparando diretório..."
           sudo rm -rf /home/ubuntu/lojisto-api
