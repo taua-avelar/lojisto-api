@@ -139,6 +139,16 @@ jobs:
           echo "🧹 Limpando arquivos temporários..."
           rm -f /home/ubuntu/lojisto-api-deployment.tar.gz
 
+          echo "🔧 Configurando nginx (se necessário)..."
+          if [ ! -f "/etc/nginx/sites-enabled/api.lojisto.site" ]; then
+            echo "📋 Configuração do nginx não encontrada, configurando..."
+            sudo bash /home/ubuntu/lojisto-api/nginx/setup-nginx.sh || echo "⚠️ Erro na configuração do nginx (pode precisar de configuração manual)"
+          else
+            echo "✅ Nginx já configurado, atualizando configuração..."
+            sudo cp /home/ubuntu/lojisto-api/nginx/api.lojisto.site.conf /etc/nginx/sites-available/api.lojisto.site
+            sudo nginx -t && sudo systemctl reload nginx || echo "⚠️ Erro ao recarregar nginx"
+          fi
+
           echo "✅ Deployment concluído com sucesso!"
           echo "🌐 API rodando em: https://api.lojisto.site"
 
