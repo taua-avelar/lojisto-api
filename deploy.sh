@@ -75,15 +75,14 @@ dist/**/*.map
 dist/**/*.tsbuildinfo
 EOF
 
-# Criar o pacote com os arquivos necessários (incluindo node_modules)
-echo "📁 Incluindo arquivos no pacote (incluindo node_modules para evitar problemas de memória no EC2)..."
+# Criar o pacote com os arquivos necessários (sem node_modules)
+echo "📁 Incluindo arquivos no pacote (npm install será executado no servidor)..."
 tar --exclude-from=.deployignore -czf "$PACKAGE_NAME" \
     dist \
     package.json \
     package-lock.json \
     ecosystem.config.js \
-    nginx \
-    node_modules
+    nginx
 
 echo "📤 Enviando pacote para o EC2..."
 
@@ -122,7 +121,8 @@ JWT_SECRET=$2a$12$KJvgTw809rPZ6dJV/DClPenLHI/4rBzmVbdmEATYhSwcIlB.SwNui
 FRONTEND_URL=https://lojisto.site,http://localhost:3000
 ENVEOF
 
-    echo "✅ Dependências já incluídas no pacote, pulando instalação..."
+    echo "📦 Instalando dependências no servidor..."
+    npm ci --production
 
     echo "🚀 Iniciando aplicação com PM2..."
     pm2 start ecosystem.config.js

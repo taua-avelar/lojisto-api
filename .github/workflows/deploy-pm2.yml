@@ -68,15 +68,14 @@ jobs:
         dist/**/*.tsbuildinfo
         EOF
 
-        # Criar o pacote com os arquivos necessários
+        # Criar o pacote com os arquivos necessários (sem node_modules)
         echo "📁 Criando pacote de deployment..."
         tar --exclude-from=.deployignore -czf lojisto-api-deployment.tar.gz \
           dist \
           package.json \
           package-lock.json \
           ecosystem.config.js \
-          nginx \
-          node_modules
+          nginx
 
     - name: Deploy to EC2
       uses: appleboy/scp-action@v0.1.7
@@ -124,7 +123,8 @@ jobs:
           FRONTEND_URL=https://lojisto.site,http://localhost:3000
           EOF
 
-          echo "✅ Dependências já incluídas no pacote..."
+          echo "📦 Instalando dependências no servidor..."
+          npm ci --production
 
           echo "🚀 Iniciando aplicação com PM2..."
           pm2 start ecosystem.config.js
