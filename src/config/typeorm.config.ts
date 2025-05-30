@@ -23,4 +23,7 @@ export default new DataSource({
   database: process.env.DB_DATABASE || "back_gestao_loja",
   entities: [User, Store, StoreUser, Product, Category, Customer, Sale, SaleItem, Commission, CommissionConfig],
   migrations: ["migrations/*.ts", "src/migrations/*.ts"],
+  ssl: process.env.DB_HOST?.includes('rds.amazonaws.com') ? {
+    rejectUnauthorized: false
+  } : false,
 });
