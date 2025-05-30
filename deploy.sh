@@ -79,7 +79,6 @@ tar --exclude-from=.deployignore -czf "$PACKAGE_NAME" \
     package.json \
     package-lock.json \
     ecosystem.config.js \
-    .env \
     node_modules
 
 echo "📤 Enviando pacote para o EC2..."
@@ -106,8 +105,20 @@ ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "$EC2_USER@$EC2_HOST" << 'ENDSSH'
     cd /home/ubuntu
     tar -xzf lojisto-api-deployment.tar.gz -C lojisto-api
 
-    echo "✅ Dependências já incluídas no pacote, pulando instalação..."
+    echo "⚙️ Criando arquivo .env..."
     cd lojisto-api
+    cat > .env << 'ENVEOF'
+PORT=8000
+DB_HOST=lojisto-postgres.ce5s2iasahw1.us-east-1.rds.amazonaws.com
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres123!
+DB_DATABASE=back_gestao_loja
+JWT_SECRET=$2a$12$KJvgTw809rPZ6dJV/DClPenLHI/4rBzmVbdmEATYhSwcIlB.SwNui
+FRONTEND_URL=https://lojisto.site,http://localhost:3000
+ENVEOF
+
+    echo "✅ Dependências já incluídas no pacote, pulando instalação..."
 
     echo "🚀 Iniciando aplicação com PM2..."
     pm2 start ecosystem.config.js
