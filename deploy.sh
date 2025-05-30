@@ -82,6 +82,7 @@ tar --exclude-from=.deployignore -czf "$PACKAGE_NAME" \
     package.json \
     package-lock.json \
     ecosystem.config.js \
+    nginx \
     node_modules
 
 echo "📤 Enviando pacote para o EC2..."
