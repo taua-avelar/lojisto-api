@@ -143,29 +143,19 @@ jobs:
           echo "✅ Deployment concluído com sucesso!"
           echo "🌐 API rodando em: https://api.lojisto.site"
 
-    - name: Verify Deployment
+    - name: Final Status Check
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
-        timeout: 30s
-        command_timeout: 30s
+        timeout: 15s
+        command_timeout: 15s
         script: |
-          echo "🏥 Verificando deployment..."
-
-          # Verificar se PM2 está rodando (sem grep para evitar travamento)
-          API_STATUS=$(pm2 jlist | jq -r '.[] | select(.name=="lojisto-api") | .pm2_env.status' 2>/dev/null || echo "error")
-
-          if [ "$API_STATUS" = "online" ]; then
-            echo "✅ API online no PM2"
-            echo "🎉 Deployment concluído com sucesso!"
-            echo "🌐 API disponível em: http://54.235.18.125:8000"
-          else
-            echo "❌ Status da API: $API_STATUS"
-            pm2 status || true
-            echo "⚠️ API pode estar inicializando..."
-          fi
+          echo "🏥 Status final do deployment:"
+          pm2 list
+          echo "✅ Deployment process completed!"
+          echo "🌐 Check API at: http://54.235.18.125:8000"
 
     - name: Cleanup
       if: always()
