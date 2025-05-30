@@ -63,6 +63,9 @@ jobs:
         nest-cli.json
         eslint.config.mjs
         .prettierrc
+        dist/**/*.d.ts
+        dist/**/*.map
+        dist/**/*.tsbuildinfo
         EOF
 
         # Criar o pacote com os arquivos necessários

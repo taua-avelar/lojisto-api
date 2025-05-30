@@ -30,6 +30,9 @@ import { PermissionsModule } from './permissions/permissions.module';
         database: configService.get('DB_DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: false,
+        ssl: configService.get('DB_HOST')?.includes('rds.amazonaws.com') ? {
+          rejectUnauthorized: false
+        } : false,
       }),
       inject: [ConfigService],
     }),

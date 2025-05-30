@@ -70,6 +70,9 @@ tsconfig.build.json
 nest-cli.json
 eslint.config.mjs
 .prettierrc
+dist/**/*.d.ts
+dist/**/*.map
+dist/**/*.tsbuildinfo
 EOF
 
 # Criar o pacote com os arquivos necessários (incluindo node_modules)
