@@ -130,8 +130,14 @@ export class SalesService {
         saleItem.sale = savedSale;
         saleItem.product = product;
         saleItem.quantity = itemDto.quantity;
-        saleItem.price = product.price;
-        saleItem.subtotal = product.price * itemDto.quantity;
+        saleItem.originalPrice = product.price; // Preço original do produto
+        
+        // Usar o preço com desconto que vem do frontend, ou o preço original se não for fornecido
+        const discountedPrice = itemDto.price || product.price;
+        saleItem.price = discountedPrice;
+        
+        // Calcular o subtotal usando o preço com desconto
+        saleItem.subtotal = discountedPrice * itemDto.quantity;
 
         // Adicionar ao total da venda
         total += saleItem.subtotal;

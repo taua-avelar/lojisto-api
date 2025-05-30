@@ -9,6 +9,10 @@ export class CreateSaleItemDto {
   @IsNumber()
   @Min(1)
   quantity: number;
+
+  @IsNumber()
+  @IsOptional()
+  price?: number;
 }
 
 export class CreateSaleDto {
