@@ -16,10 +16,32 @@ async function createApp() {
     console.log('CORS configurado para as seguintes origens:', origins);
 
     app.enableCors({
-      origin: origins,
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
+      origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+        // Permitir requisições sem origin (ex: Postman, curl)
+        if (!origin) return callback(null, true);
+
+        // Verificar se a origin está na lista permitida
+        if (origins.includes(origin)) {
+          return callback(null, true);
+        }
+
+        console.log(`CORS: Origin ${origin} não permitida. Origens permitidas:`, origins);
+        return callback(new Error('Not allowed by CORS'), false);
+      },
+      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+      allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'Accept',
+        'Origin',
+        'X-Requested-With',
+        'Access-Control-Allow-Origin',
+        'Access-Control-Allow-Headers',
+        'Access-Control-Allow-Methods'
+      ],
       credentials: true,
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
     });
 
     // Validação global de DTOs
