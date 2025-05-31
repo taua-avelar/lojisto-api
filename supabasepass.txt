@@ -1,0 +1,7 @@
+proj url = https://yttdusvijhskoqpjewrr.supabase.co
+
+api key eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dGR1c3Zpamhza29xcGpld3JyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3MjEzMjEsImV4cCI6MjA2NDI5NzMyMX0.zydLa2JDgzgFldabmqZXsASmONRqdKPYK-utrlQtGkA
+
+pass gZP$vj&#Q2WecQp
+
+url = postgresql://postgres:gZP$vj&#Q2WecQp@db.yttdusvijhskoqpjewrr.supabase.co:5432/postgres
