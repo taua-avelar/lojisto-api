@@ -35,6 +35,7 @@ async function createApp() {
         'Accept',
         'Origin',
         'X-Requested-With',
+        'Store-Id',
         'Access-Control-Allow-Origin',
         'Access-Control-Allow-Headers',
         'Access-Control-Allow-Methods'
