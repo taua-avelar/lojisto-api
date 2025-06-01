@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { Customer } from '../../customers/entities/customer.entity';
 import { Store } from '../../stores/entities/store.entity';
 import { Sale } from '../../sales/entities/sale.entity';
@@ -23,9 +23,9 @@ export class CreditSale {
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
-  @ManyToOne(() => Sale, { nullable: true })
+  @OneToOne(() => Sale, sale => sale.creditSale, { cascade: ['soft-remove'], nullable: false })
   @JoinColumn({ name: 'sale_id' })
-  sale: Sale | null;
+  sale: Sale;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   total_amount: number;

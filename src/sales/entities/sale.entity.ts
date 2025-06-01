@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { Customer } from '../../customers/entities/customer.entity';
 import { Store } from '../../stores/entities/store.entity';
 import { SaleItem } from './sale-item.entity';
 import { User } from '../../users/entities/user.entity';
+import { CreditSale } from '../../credit-sales/entities/credit-sale.entity';
 
 export enum PaymentMethod {
   NONE = 'none',
@@ -61,6 +62,9 @@ export class Sale {
 
   @OneToMany(() => SaleItem, saleItem => saleItem.sale, { cascade: true })
   items: SaleItem[];
+
+  @OneToOne(() => CreditSale, creditSale => creditSale.sale, { cascade: ['soft-remove'], nullable: true })
+  creditSale?: CreditSale;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

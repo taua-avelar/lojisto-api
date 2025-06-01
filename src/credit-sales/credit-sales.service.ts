@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource, LessThan, MoreThanOrEqual, Between } from 'typeorm';
+import { Repository, DataSource, LessThan, Between } from 'typeorm';
 import { CreditSale, CreditSaleStatus } from './entities/credit-sale.entity';
 import { CreditInstallment, InstallmentStatus } from './entities/credit-installment.entity';
 import { CreateCreditSaleDto } from './dto/create-credit-sale.dto';
@@ -43,13 +43,14 @@ export class CreditSalesService {
       throw new NotFoundException(`Cliente com ID ${customerId} não encontrado na loja ${storeId}`);
     }
 
-    // Verificar se a venda existe (se fornecida)
-    let sale: Sale | null = null;
-    if (saleId) {
-      sale = await this.saleRepository.findOne({ where: { id: saleId, store: { id: storeId } } });
-      if (!sale) {
-        throw new NotFoundException(`Venda com ID ${saleId} não encontrada na loja ${storeId}`);
-      }
+    // Verificar se a venda existe (obrigatória agora)
+    if (!saleId) {
+      throw new BadRequestException('O ID da venda é obrigatório para criar um crediário');
+    }
+
+    const sale = await this.saleRepository.findOne({ where: { id: saleId, store: { id: storeId } } });
+    if (!sale) {
+      throw new NotFoundException(`Venda com ID ${saleId} não encontrada na loja ${storeId}`);
     }
 
     // Validar o número de parcelas

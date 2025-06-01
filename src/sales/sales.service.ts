@@ -187,7 +187,7 @@ export class SalesService {
   async findAll(storeId: string): Promise<Sale[]> {
     return this.saleRepository.find({
       where: { store: { id: storeId } },
-      relations: ['customer', 'items', 'items.product', 'seller', 'store'],
+      relations: ['customer', 'items', 'items.product', 'seller', 'store', 'creditSale'],
       order: { date: 'DESC' },
     });
   }
@@ -195,7 +195,7 @@ export class SalesService {
   async findOne(id: string, storeId: string): Promise<Sale> {
     const sale = await this.saleRepository.findOne({
       where: { id, store: { id: storeId } },
-      relations: ['customer', 'items', 'items.product', 'seller', 'store'],
+      relations: ['customer', 'items', 'items.product', 'seller', 'store', 'creditSale'],
     });
 
     if (!sale) {
@@ -240,7 +240,7 @@ export class SalesService {
   }
 
   async remove(id: string, storeId: string): Promise<void> {
-    // Buscar a venda
+    // Buscar a venda com todas as relações (incluindo creditSale para cascata)
     const sale = await this.findOne(id, storeId);
 
     // Iniciar uma transação

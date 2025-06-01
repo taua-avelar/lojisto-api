@@ -2,8 +2,7 @@ import { IsString, IsNumber, IsOptional, IsUUID, IsDateString, Min, IsPositive, 
 
 export class CreateCreditSaleDto {
   @IsUUID()
-  @IsOptional()
-  saleId?: string;
+  saleId: string;
 
   @IsUUID()
   customerId: string;
